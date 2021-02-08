@@ -10,13 +10,14 @@ class AppTextField extends StatelessWidget {
   final TextInputType textInputType;
   final bool obscureText;
 
-  AppTextField(
-      {@required this.isIOS,
-      @required this.hintText,
-      @required this.cupertinoIcon,
-      @required this.materialIcon,
-      this.textInputType,
-      this.obscureText});
+  AppTextField({
+    @required this.isIOS,
+    @required this.hintText,
+    @required this.cupertinoIcon,
+    @required this.materialIcon,
+    this.textInputType = TextInputType.text,
+    this.obscureText = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +27,7 @@ class AppTextField extends StatelessWidget {
             horizontal: TextFieldStyles.textBoxHorizontal,
             vertical: TextFieldStyles.textBoxVertical),
         child: CupertinoTextField(
-          keyboardType:
-              (textInputType != null) ? textInputType : TextInputType.text,
+          keyboardType: textInputType,
           padding: EdgeInsets.all(12.0),
           placeholder: hintText,
           placeholderStyle: TextFieldStyles.placeholder,
@@ -36,7 +36,7 @@ class AppTextField extends StatelessWidget {
           cursorColor: TextFieldStyles.cursorColor,
           decoration: TextFieldStyles.cupertinoDecoration,
           prefix: TextFieldStyles.iconPrefix(cupertinoIcon),
-          obscureText: (obscureText != null) ? obscureText : false,
+          obscureText: obscureText,
         ),
       );
     } else {
@@ -45,14 +45,13 @@ class AppTextField extends StatelessWidget {
             horizontal: TextFieldStyles.textBoxHorizontal,
             vertical: TextFieldStyles.textBoxVertical),
         child: TextField(
-          keyboardType:
-              (textInputType != null) ? textInputType : TextInputType.text,
+          keyboardType: textInputType,
           cursorColor: TextFieldStyles.cursorColor,
           style: TextFieldStyles.text,
           textAlign: TextFieldStyles.textAlign,
           decoration:
               TextFieldStyles.materialDecoration(hintText, materialIcon),
-          obscureText: (obscureText != null) ? obscureText : false,
+          obscureText: obscureText,
         ),
       );
     }

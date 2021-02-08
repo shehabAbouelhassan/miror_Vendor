@@ -30,6 +30,8 @@ dependencies:
   google_fonts: ^1.1.2
   provider: ^4.3.3
   font_awesome_flutter: ^8.11.0
+  rxdart: ^0.25.0
+
 
 
 
