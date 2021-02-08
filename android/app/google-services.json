@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "869384203607",
+    "project_id": "vendorapp-2ce07",
+    "storage_bucket": "vendorapp-2ce07.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:869384203607:android:c830be6890cef5b391e212",
+        "android_client_info": {
+          "package_name": "com.shehab.Vendor_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "869384203607-fff7sue28pqdf7dp4ol05lqar6kar4sl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shehab.Vendor_app",
+            "certificate_hash": "df90205bd7a091fdb5b637bd72083dc214c95010"
+          }
+        },
+        {
+          "client_id": "869384203607-8ghf9ea2gsf9deuu6o474cd58t01isc8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCA00s51D4hE3wfAoGPNiu2vz1_nM-OaJY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "869384203607-8ghf9ea2gsf9deuu6o474cd58t01isc8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
