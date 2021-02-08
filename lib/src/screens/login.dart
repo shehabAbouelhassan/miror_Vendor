@@ -2,14 +2,14 @@ import 'package:Vendor_app/src/blocs/auth_bloc.dart';
 import 'package:Vendor_app/src/styles/base.dart';
 import 'package:Vendor_app/src/styles/text.dart';
 import 'package:Vendor_app/src/widgets/button.dart';
-import 'package:Vendor_app/src/widgets/social_Buttons.dart';
+import 'package:Vendor_app/src/widgets/social_button.dart';
 import 'package:Vendor_app/src/widgets/textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'dart:io';
-import '../styles/colors.dart';
+
+import 'package:provider/provider.dart';
 
 class Login extends StatelessWidget {
   @override
@@ -35,7 +35,7 @@ class Login extends StatelessWidget {
           height: MediaQuery.of(context).size.height * .2,
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage('assets/images/header.png'),
+                  image: AssetImage('assets/images/top_bg.png'),
                   fit: BoxFit.fill)),
         ),
         Container(
@@ -72,18 +72,24 @@ class Login extends StatelessWidget {
                 onChanged: authBloc.changePassword,
               );
             }),
-        AppButton(
-          buttonText: "Login",
-          buttonType: ButtonType.LightBlue,
-        ),
+        StreamBuilder<bool>(
+            stream: authBloc.isValid,
+            builder: (context, snapshot) {
+              return AppButton(
+                buttonText: 'Login',
+                buttonType: (snapshot.data == true)
+                    ? ButtonType.LightBlue
+                    : ButtonType.Disabled,
+              );
+            }),
         SizedBox(
           height: 6.0,
         ),
         Center(
-          child: Text(
-            'Or',
-            style: TextStyles.suggestion,
-          ),
+          child: Text('Or', style: TextStyles.suggestion),
+        ),
+        SizedBox(
+          height: 6.0,
         ),
         Padding(
           padding: BaseStyles.listPadding,
@@ -91,11 +97,9 @@ class Login extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               AppSocialButton(
-                socialType: SocialType.FaceBook,
+                socialType: SocialType.Facebook,
               ),
-              SizedBox(
-                width: 15.0,
-              ),
+              SizedBox(width: 15.0),
               AppSocialButton(socialType: SocialType.Google),
             ],
           ),
@@ -103,18 +107,18 @@ class Login extends StatelessWidget {
         Padding(
           padding: BaseStyles.listPadding,
           child: RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(
-                text: "Don't have an account ?",
-                style: TextStyles.body,
-                children: [
-                  TextSpan(
-                      text: "Signup",
-                      style: TextStyles.link,
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () => Navigator.pushNamed(context, '/signup'))
-                ]),
-          ),
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                  text: 'New Here? ',
+                  style: TextStyles.body,
+                  children: [
+                    TextSpan(
+                        text: 'Signup',
+                        style: TextStyles.link,
+                        recognizer: TapGestureRecognizer()
+                          ..onTap =
+                              () => Navigator.pushNamed(context, '/signup'))
+                  ])),
         )
       ],
     );

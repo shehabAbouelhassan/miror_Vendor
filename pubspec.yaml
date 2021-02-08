@@ -23,17 +23,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cloud_firestore: ^0.16.0
+  cloud_firestore: ^0.12.9+5
   cupertino_icons: ^1.0.0
-  firebase_auth: ^0.20.0+1
-  firebase_core: ^0.7.0
+  firebase_analytics: ^5.0.2
+  firebase_auth: ^0.14.0+5
+  firebase_core: ^0.4.0+9
+  font_awesome_flutter: ^8.11.0
   google_fonts: ^1.1.2
   provider: ^4.3.3
-  font_awesome_flutter: ^8.11.0
   rxdart: ^0.25.0
-
-
-
 
 dev_dependencies:
   flutter_test:

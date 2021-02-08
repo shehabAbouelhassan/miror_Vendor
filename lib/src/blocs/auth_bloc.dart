@@ -1,7 +1,9 @@
 import 'dart:async';
 
-import 'package:provider/provider.dart';
-import 'package:rxdart/streams.dart';
+import 'package:Vendor_app/src/models/user.dart';
+import 'package:Vendor_app/src/services/firestore_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
 
 final RegExp regExpEmail = RegExp(
@@ -10,12 +12,12 @@ final RegExp regExpEmail = RegExp(
 class AuthBloc {
   final _email = BehaviorSubject<String>();
   final _password = BehaviorSubject<String>();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirestoreService _firestoreService = FirestoreService();
 
   //Get Data
   Stream<String> get email => _email.stream.transform(validateEmail);
   Stream<String> get password => _password.stream.transform(validatePassword);
-  //taking the two streams and if thereIs a value coming out of them, it passes a validation
-  //and the values coming out to UI >true / none
   Stream<bool> get isValid =>
       CombineLatestStream.combine2(email, password, (email, password) => true);
 
@@ -23,12 +25,12 @@ class AuthBloc {
   Function(String) get changeEmail => _email.sink.add;
   Function(String) get changePassword => _password.sink.add;
 
-  Dispose() {
+  dispose() {
     _email.close();
     _password.close();
   }
 
-  //Transforms
+  //Transformers
   final validateEmail =
       StreamTransformer<String, String>.fromHandlers(handleData: (email, sink) {
     if (regExpEmail.hasMatch(email.trim())) {
@@ -46,4 +48,18 @@ class AuthBloc {
       sink.addError('8 Character Minimum');
     }
   });
+
+  //Functions
+  signupEmail() async {
+    print('Signing up with username and password');
+
+    try {
+      AuthResult authResult = await _auth.createUserWithEmailAndPassword(
+          email: _email.value.trim(), password: _password.value.trim());
+      var user = User(userId: authResult.user.uid, email: _email.value.trim());
+      await _firestoreService.addUser(user);
+    } catch (error) {
+      print(error);
+    }
+  }
 }
