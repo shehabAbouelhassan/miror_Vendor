@@ -13,10 +13,11 @@ class AuthBloc {
 
   //Get Data
   Stream<String> get email => _email.stream.transform(validateEmail);
-  Stream<String> get password => _password.stream;
-  //taking the two streams and if thereIs a value coming out of them, it passes a validation 
+  Stream<String> get password => _password.stream.transform(validatePassword);
+  //taking the two streams and if thereIs a value coming out of them, it passes a validation
   //and the values coming out to UI >true / none
-  Stream<bool> get isValid => CombineLatestStream.combine2(email, password, (email,password) => true);
+  Stream<bool> get isValid =>
+      CombineLatestStream.combine2(email, password, (email, password) => true);
 
   //Set Data
   Function(String) get changeEmail => _email.sink.add;
@@ -33,12 +34,12 @@ class AuthBloc {
     if (regExpEmail.hasMatch(email.trim())) {
       sink.add(email.trim());
     } else {
-      sink.addError('Must Be Valid Email Address')
+      sink.addError('Must Be Valid Email Address');
     }
   });
 
-  final validatePassword =
-      StreamTransformer<String, String>.fromHandlers(handleData: (password, sink) {
+  final validatePassword = StreamTransformer<String, String>.fromHandlers(
+      handleData: (password, sink) {
     if (password.length >= 8) {
       sink.add(password.trim());
     } else {

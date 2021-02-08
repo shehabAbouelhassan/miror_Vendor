@@ -1,13 +1,33 @@
+import 'package:Vendor_app/src/blocs/auth_bloc.dart';
 import 'package:Vendor_app/src/routes.dart';
 import 'package:Vendor_app/src/screens/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
-class App extends StatelessWidget {
+import 'package:provider/provider.dart';
+
+final authBloc = AuthBloc();
+
+class App extends StatefulWidget {
+  @override
+  _AppState createState() => _AppState();
+}
+
+class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
-    return PlatformApp();
+    return MultiProvider(providers: [
+      Provider(
+        create: (context) => authBloc,
+      )
+    ], child: PlatformApp());
+  }
+
+  @override
+  void dispose() {
+    authBloc.Dispose();
+    super.dispose();
   }
 }
 

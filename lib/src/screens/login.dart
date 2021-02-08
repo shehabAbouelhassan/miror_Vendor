@@ -1,3 +1,4 @@
+import 'package:Vendor_app/src/blocs/auth_bloc.dart';
 import 'package:Vendor_app/src/styles/base.dart';
 import 'package:Vendor_app/src/styles/text.dart';
 import 'package:Vendor_app/src/widgets/button.dart';
@@ -6,24 +7,27 @@ import 'package:Vendor_app/src/widgets/textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'dart:io';
 import '../styles/colors.dart';
 
 class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final authBloc = Provider.of<AuthBloc>(context);
+
     if (Platform.isIOS) {
       return CupertinoPageScaffold(
-        child: pageBody(context),
+        child: pageBody(context, authBloc),
       );
     } else {
       return Scaffold(
-        body: pageBody(context),
+        body: pageBody(context, authBloc),
       );
     }
   }
 
-  Widget pageBody(BuildContext context) {
+  Widget pageBody(BuildContext context, AuthBloc authBloc) {
     return ListView(
       padding: EdgeInsets.all(0.0),
       children: <Widget>[
@@ -40,22 +44,34 @@ class Login extends StatelessWidget {
             image: DecorationImage(image: AssetImage('assets/images/logo.png')),
           ),
         ),
-        AppTextField(
-          isIOS: Platform.isIOS,
-          hintText: 'Email',
-          cupertinoIcon: CupertinoIcons.mail_solid,
-          materialIcon: Icons.email,
-          textInputType: TextInputType.emailAddress,
-        ),
-        AppTextField(
-          isIOS: Platform.isIOS,
-          hintText: 'Password',
-          cupertinoIcon: IconData(0xf4c9,
-              fontFamily: CupertinoIcons.iconFont,
-              fontPackage: CupertinoIcons.iconFontPackage),
-          materialIcon: Icons.lock,
-          obscureText: true,
-        ),
+        StreamBuilder<String>(
+            stream: authBloc.email,
+            builder: (context, snapshot) {
+              return AppTextField(
+                isIOS: Platform.isIOS,
+                hintText: 'Email',
+                cupertinoIcon: CupertinoIcons.mail_solid,
+                materialIcon: Icons.email,
+                textInputType: TextInputType.emailAddress,
+                errorText: snapshot.error,
+                onChanged: authBloc.changeEmail,
+              );
+            }),
+        StreamBuilder<String>(
+            stream: authBloc.password,
+            builder: (context, snapshot) {
+              return AppTextField(
+                isIOS: Platform.isIOS,
+                hintText: 'Password',
+                cupertinoIcon: IconData(0xf4c9,
+                    fontFamily: CupertinoIcons.iconFont,
+                    fontPackage: CupertinoIcons.iconFontPackage),
+                materialIcon: Icons.lock,
+                obscureText: true,
+                errorText: snapshot.error,
+                onChanged: authBloc.changePassword,
+              );
+            }),
         AppButton(
           buttonText: "Login",
           buttonType: ButtonType.LightBlue,
