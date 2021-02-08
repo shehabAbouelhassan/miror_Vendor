@@ -1,7 +1,6 @@
 import 'package:Vendor_app/src/screens/landing.dart';
 import 'package:Vendor_app/src/screens/login.dart';
 import 'package:Vendor_app/src/screens/signup.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

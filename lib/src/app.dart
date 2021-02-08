@@ -1,6 +1,5 @@
 import 'package:Vendor_app/src/routes.dart';
 import 'package:Vendor_app/src/screens/login.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';

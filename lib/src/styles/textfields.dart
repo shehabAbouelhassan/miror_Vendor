@@ -1,12 +1,13 @@
 import 'package:Vendor_app/src/styles/base.dart';
 import 'package:Vendor_app/src/styles/colors.dart';
 import 'package:Vendor_app/src/styles/text.dart';
+
 import 'package:flutter/material.dart';
 
 abstract class TextFieldStyles {
-  static double get textBoxHorizontal => 25.0;
+  static double get textBoxHorizontal => BaseStyles.listFiledHorizontal;
 
-  static double get textBoxVertical => 8.0;
+  static double get textBoxVertical => BaseStyles.listFiledVertical;
 
   static TextStyle get text => TextStyles.body;
 

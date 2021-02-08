@@ -1,5 +1,10 @@
-import 'package:Vendor_app/src/styles/textfields.dart';
+import 'package:Vendor_app/src/styles/base.dart';
+import 'package:Vendor_app/src/styles/text.dart';
+import 'package:Vendor_app/src/widgets/button.dart';
+import 'package:Vendor_app/src/widgets/social_Buttons.dart';
+import 'package:Vendor_app/src/widgets/textfield.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import '../styles/colors.dart';
@@ -35,46 +40,67 @@ class Login extends StatelessWidget {
             image: DecorationImage(image: AssetImage('assets/images/logo.png')),
           ),
         ),
-        Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: TextFieldStyles.textBoxHorizontal,
-              vertical: TextFieldStyles.textBoxVertical),
-          child: email(),
+        AppTextField(
+          isIOS: Platform.isIOS,
+          hintText: 'Email',
+          cupertinoIcon: CupertinoIcons.mail_solid,
+          materialIcon: Icons.email,
+          textInputType: TextInputType.emailAddress,
         ),
-        password(),
+        AppTextField(
+          isIOS: Platform.isIOS,
+          hintText: 'Password',
+          cupertinoIcon: IconData(0xf4c9,
+              fontFamily: CupertinoIcons.iconFont,
+              fontPackage: CupertinoIcons.iconFontPackage),
+          materialIcon: Icons.lock,
+          obscureText: true,
+        ),
+        AppButton(
+          buttonText: "Login",
+          buttonType: ButtonType.LightBlue,
+        ),
+        SizedBox(
+          height: 6.0,
+        ),
+        Center(
+          child: Text(
+            'Or',
+            style: TextStyles.suggestion,
+          ),
+        ),
+        Padding(
+          padding: BaseStyles.listPadding,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              AppSocialButton(
+                socialType: SocialType.FaceBook,
+              ),
+              SizedBox(
+                width: 15.0,
+              ),
+              AppSocialButton(socialType: SocialType.Google),
+            ],
+          ),
+        ),
+        Padding(
+          padding: BaseStyles.listPadding,
+          child: RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+                text: "Don't have an account ?",
+                style: TextStyles.body,
+                children: [
+                  TextSpan(
+                      text: "Signup",
+                      style: TextStyles.link,
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () => Navigator.pushNamed(context, '/signup'))
+                ]),
+          ),
+        )
       ],
     );
-  }
-
-  Widget email() {
-    if (Platform.isIOS) {
-      return CupertinoTextField(
-        keyboardType: TextInputType.emailAddress,
-        padding: EdgeInsets.all(12.0),
-        placeholder: 'Email',
-        placeholderStyle: TextFieldStyles.placeholder,
-        style: TextFieldStyles.text,
-        textAlign: TextFieldStyles.textAlign,
-        cursorColor: TextFieldStyles.cursorColor,
-        decoration: TextFieldStyles.cupertinoDecoration,
-        prefix: TextFieldStyles.iconPrefix(CupertinoIcons.mail_solid),
-      );
-    } else {
-      return TextField(
-        keyboardType: TextInputType.emailAddress,
-        cursorColor: TextFieldStyles.cursorColor,
-        style: TextFieldStyles.text,
-        textAlign: TextFieldStyles.textAlign,
-        decoration: TextFieldStyles.materialDecoration('Email', Icons.email),
-      );
-    }
-  }
-
-  Widget password() {
-    if (Platform.isIOS) {
-      return CupertinoTextField();
-    } else {
-      return TextField();
-    }
   }
 }
