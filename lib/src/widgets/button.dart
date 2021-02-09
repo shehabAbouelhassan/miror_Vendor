@@ -2,7 +2,6 @@ import 'package:Vendor_app/src/styles/base.dart';
 import 'package:Vendor_app/src/styles/buttons.dart';
 import 'package:Vendor_app/src/styles/colors.dart';
 import 'package:Vendor_app/src/styles/text.dart';
-
 import 'package:flutter/material.dart';
 
 class AppButton extends StatefulWidget {

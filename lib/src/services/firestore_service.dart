@@ -1,6 +1,5 @@
 import 'package:Vendor_app/src/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class FirestoreService {
   Firestore _db = Firestore.instance;

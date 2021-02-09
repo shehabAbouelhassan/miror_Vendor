@@ -22,6 +22,7 @@ class AuthBloc {
   Stream<bool> get isValid =>
       CombineLatestStream.combine2(email, password, (email, password) => true);
   Stream<User> get user => _user.stream;
+
   //Set Data
   Function(String) get changeEmail => _email.sink.add;
   Function(String) get changePassword => _password.sink.add;
@@ -57,9 +58,8 @@ class AuthBloc {
       AuthResult authResult = await _auth.createUserWithEmailAndPassword(
           email: _email.value.trim(), password: _password.value.trim());
       var user = User(userId: authResult.user.uid, email: _email.value.trim());
-      _user.sink.add(user);
-
       await _firestoreService.addUser(user);
+      _user.sink.add(user);
     } catch (error) {
       print(error);
     }

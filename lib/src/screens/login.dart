@@ -49,7 +49,7 @@ class _LoginState extends State<Login> {
           height: MediaQuery.of(context).size.height * .2,
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage('assets/images/top_bg.png'),
+                  image: AssetImage('assets/images/header.png'),
                   fit: BoxFit.fill)),
         ),
         Container(

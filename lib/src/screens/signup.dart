@@ -4,7 +4,6 @@ import 'package:Vendor_app/src/styles/text.dart';
 import 'package:Vendor_app/src/widgets/button.dart';
 import 'package:Vendor_app/src/widgets/social_button.dart';
 import 'package:Vendor_app/src/widgets/textfield.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';

@@ -1,8 +1,9 @@
-import 'package:Vendor_app/src/Screens/landing.dart';
-import 'package:Vendor_app/src/Screens/login.dart';
 import 'package:Vendor_app/src/blocs/auth_bloc.dart';
 import 'package:Vendor_app/src/routes.dart';
-
+import 'package:Vendor_app/src/screens/landing.dart';
+import 'package:Vendor_app/src/screens/login.dart';
+import 'package:Vendor_app/src/styles/colors.dart';
+import 'package:Vendor_app/src/styles/text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
@@ -45,11 +46,15 @@ class PlatformApp extends StatelessWidget {
                   ? Landing()
                   : Login(),
           onGenerateRoute: Routes.cupertinoRoutes,
-          theme: CupertinoThemeData(scaffoldBackgroundColor: Colors.white));
+          theme: CupertinoThemeData(
+              primaryColor: AppColors.straw,
+              scaffoldBackgroundColor: Colors.white,
+              textTheme: CupertinoTextThemeData(
+                  tabLabelTextStyle: TextStyles.suggestion)));
     } else {
       return MaterialApp(
-          home: (isLoggedIn == false)
-              ? loadingScreen(true)
+          home: (isLoggedIn == null)
+              ? loadingScreen(false)
               : (isLoggedIn == true)
                   ? Landing()
                   : Login(),
@@ -65,10 +70,6 @@ class PlatformApp extends StatelessWidget {
               child: CupertinoActivityIndicator(),
             ),
           )
-        : Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+        : Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 }

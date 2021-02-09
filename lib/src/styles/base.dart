@@ -1,5 +1,6 @@
-import 'package:Vendor_app/src/styles/colors.dart';
 import 'package:flutter/material.dart';
+
+import 'colors.dart';
 
 abstract class BaseStyles {
   static double get borderRadius => 25.0;
