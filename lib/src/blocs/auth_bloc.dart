@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:Vendor_app/src/models/user.dart';
 import 'package:Vendor_app/src/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
 
@@ -13,6 +14,7 @@ class AuthBloc {
   final _email = BehaviorSubject<String>();
   final _password = BehaviorSubject<String>();
   final _user = BehaviorSubject<User>();
+  final _errorMessage = BehaviorSubject<String>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirestoreService _firestoreService = FirestoreService();
 
@@ -22,6 +24,7 @@ class AuthBloc {
   Stream<bool> get isValid =>
       CombineLatestStream.combine2(email, password, (email, password) => true);
   Stream<User> get user => _user.stream;
+  Stream<String> get errorMessage => _errorMessage.stream;
 
   //Set Data
   Function(String) get changeEmail => _email.sink.add;
@@ -31,6 +34,7 @@ class AuthBloc {
     _email.close();
     _password.close();
     _user.close();
+    _errorMessage.close();
   }
 
   //Transformers
@@ -60,8 +64,9 @@ class AuthBloc {
       var user = User(userId: authResult.user.uid, email: _email.value.trim());
       await _firestoreService.addUser(user);
       _user.sink.add(user);
-    } catch (error) {
+    } on PlatformException catch (error) {
       print(error);
+      _errorMessage.sink.add(error.message);
     }
   }
 
@@ -71,8 +76,9 @@ class AuthBloc {
           email: _email.value.trim(), password: _password.value.trim());
       var user = await _firestoreService.fetchUser(authResult.user.uid);
       _user.sink.add(user);
-    } catch (error) {
+    } on PlatformException catch (error) {
       print(error);
+      _errorMessage.sink.add(error.message);
     }
   }
 
@@ -85,5 +91,14 @@ class AuthBloc {
 
     _user.sink.add(user);
     return true;
+  }
+
+  logout() async {
+    await _auth.signOut();
+    _user.sink.add(null);
+  }
+
+  clearErrorMessage() {
+    _errorMessage.sink.add('');
   }
 }

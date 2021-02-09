@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:Vendor_app/src/blocs/auth_bloc.dart';
 import 'package:Vendor_app/src/styles/base.dart';
 import 'package:Vendor_app/src/styles/text.dart';
+import 'package:Vendor_app/src/widgets/alerts.dart';
 import 'package:Vendor_app/src/widgets/button.dart';
 import 'package:Vendor_app/src/widgets/social_button.dart';
 import 'package:Vendor_app/src/widgets/textfield.dart';
@@ -12,6 +15,8 @@ import 'dart:io';
 import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
+  StreamSubscription _streamSubscription;
+  StreamSubscription _errorMessageSubscription;
   @override
   _LoginState createState() => _LoginState();
 }
@@ -23,7 +28,22 @@ class _LoginState extends State<Login> {
     authBloc.user.listen((user) {
       if (user != null) Navigator.pushReplacementNamed(context, '/landing');
     });
+    widget._errorMessageSubscription =
+        authBloc.errorMessage.listen((errorMessage) {
+      if (errorMessage != '') {
+        //show our alert
+        AppAlerts.showErrorDialog(context, errorMessage)
+            .then((_) => authBloc.clearErrorMessage());
+      }
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    widget._streamSubscription.cancel();
+    widget._errorMessageSubscription.cancel();
+    super.dispose();
   }
 
   @override
