@@ -1,7 +1,10 @@
 import 'package:Vendor_app/src/blocs/auth_bloc.dart';
+import 'package:Vendor_app/src/blocs/customer_bloc.dart';
+import 'package:Vendor_app/src/blocs/product_bloc.dart';
 import 'package:Vendor_app/src/routes.dart';
 import 'package:Vendor_app/src/screens/landing.dart';
 import 'package:Vendor_app/src/screens/login.dart';
+import 'package:Vendor_app/src/services/firestore_service.dart';
 import 'package:Vendor_app/src/styles/colors.dart';
 import 'package:Vendor_app/src/styles/text.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,7 +13,13 @@ import 'dart:io';
 
 import 'package:provider/provider.dart';
 
+import 'blocs/vendor_bloc.dart';
+
 final authBloc = AuthBloc();
+final productBloc = ProductBloc();
+final customerBloc = CustomerBloc();
+final vendorBloc = VendorBloc();
+final firestoreService = FirestoreService();
 
 class App extends StatefulWidget {
   @override
@@ -22,13 +31,24 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return MultiProvider(providers: [
       Provider(create: (context) => authBloc),
-      FutureProvider(create: (context) => authBloc.isLoggedIn())
+      Provider(create: (context) => productBloc),
+      Provider(
+        create: (context) => customerBloc,
+      ),
+      Provider(
+        create: (context) => vendorBloc,
+      ),
+      FutureProvider(create: (context) => authBloc.isLoggedIn()),
+      StreamProvider(create: (context) => firestoreService.fetchUnitTypes())
     ], child: PlatformApp());
   }
 
   @override
   void dispose() {
     authBloc.dispose();
+    productBloc.dispose();
+    customerBloc.dispose();
+    vendorBloc.dispose();
     super.dispose();
   }
 }

@@ -15,24 +15,24 @@ import 'dart:io';
 import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
-  StreamSubscription _streamSubscription;
-  StreamSubscription _errorMessageSubscription;
   @override
   _LoginState createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
+  StreamSubscription _userSubscription;
+  StreamSubscription _errorMessageSubscription;
+
   @override
   void initState() {
     final authBloc = Provider.of<AuthBloc>(context, listen: false);
-    authBloc.user.listen((user) {
+    _userSubscription = authBloc.user.listen((user) {
       if (user != null) Navigator.pushReplacementNamed(context, '/landing');
     });
-    widget._errorMessageSubscription =
-        authBloc.errorMessage.listen((errorMessage) {
+
+    _errorMessageSubscription = authBloc.errorMessage.listen((errorMessage) {
       if (errorMessage != '') {
-        //show our alert
-        AppAlerts.showErrorDialog(context, errorMessage)
+        AppAlerts.showErrorDialog(Platform.isIOS, context, errorMessage)
             .then((_) => authBloc.clearErrorMessage());
       }
     });
@@ -41,8 +41,8 @@ class _LoginState extends State<Login> {
 
   @override
   void dispose() {
-    widget._streamSubscription.cancel();
-    widget._errorMessageSubscription.cancel();
+    _userSubscription.cancel();
+    _errorMessageSubscription.cancel();
     super.dispose();
   }
 
@@ -69,7 +69,7 @@ class _LoginState extends State<Login> {
           height: MediaQuery.of(context).size.height * .2,
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage('assets/images/header.png'),
+                  image: AssetImage('assets/images/top_bg.png'),
                   fit: BoxFit.fill)),
         ),
         Container(

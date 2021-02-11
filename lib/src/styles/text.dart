@@ -19,6 +19,14 @@ abstract class TextStyles {
             fontSize: 30.0));
   }
 
+  static TextStyle get listTitle {
+    return GoogleFonts.economica(
+        textStyle: TextStyle(
+            color: AppColors.straw,
+            fontWeight: FontWeight.bold,
+            fontSize: 25.0));
+  }
+
   static TextStyle get navTitle {
     return GoogleFonts.poppins(
         textStyle:
@@ -33,6 +41,21 @@ abstract class TextStyles {
   static TextStyle get body {
     return GoogleFonts.roboto(
         textStyle: TextStyle(color: AppColors.darkgray, fontSize: 16.0));
+  }
+
+  static TextStyle get bodyLightBlue {
+    return GoogleFonts.roboto(
+        textStyle: TextStyle(color: AppColors.lightblue, fontSize: 16.0));
+  }
+
+  static TextStyle get bodyRed {
+    return GoogleFonts.roboto(
+        textStyle: TextStyle(color: AppColors.red, fontSize: 16.0));
+  }
+
+  static TextStyle get picker {
+    return GoogleFonts.roboto(
+        textStyle: TextStyle(color: AppColors.darkgray, fontSize: 35.0));
   }
 
   static TextStyle get link {

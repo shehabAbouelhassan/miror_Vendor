@@ -2,36 +2,41 @@ import 'dart:async';
 
 import 'package:Vendor_app/src/blocs/auth_bloc.dart';
 import 'package:Vendor_app/src/styles/tabbar.dart';
+import 'package:Vendor_app/src/widgets/customer_scaffold.dart';
 import 'package:Vendor_app/src/widgets/navbar.dart';
-import 'package:Vendor_app/src/widgets/orders.dart';
-import 'package:Vendor_app/src/widgets/products.dart';
-import 'package:Vendor_app/src/widgets/profile.dart';
-import 'package:Vendor_app/src/widgets/vendor_scaffold.dart';
+import 'package:Vendor_app/src/widgets/products_customer.dart';
+import 'package:Vendor_app/src/widgets/profile_customer.dart';
+import 'package:Vendor_app/src/widgets/shopping_bag.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:io';
 
 import 'package:provider/provider.dart';
 
-class Vendor extends StatefulWidget {
-  @override
-  _VendorState createState() => _VendorState();
+class Customer extends StatefulWidget {
+  final String marketId;
 
-  static TabBar get vendorTabBar {
+  Customer({@required this.marketId});
+
+  @override
+  _CustomerState createState() => _CustomerState();
+
+  static TabBar get customerTabBar {
     return TabBar(
       unselectedLabelColor: TabBarStyles.unselectedLabelColor,
       labelColor: TabBarStyles.labelColor,
       indicatorColor: TabBarStyles.indicatorColor,
       tabs: <Widget>[
         Tab(icon: Icon(Icons.list)),
-        Tab(icon: Icon(Icons.shopping_cart)),
+        Tab(icon: Icon(FontAwesomeIcons.shoppingBag)),
         Tab(icon: Icon(Icons.person)),
       ],
     );
   }
 }
 
-class _VendorState extends State<Vendor> {
+class _CustomerState extends State<Customer> {
   StreamSubscription _userSubscription;
 
   @override
@@ -61,10 +66,11 @@ class _VendorState extends State<Vendor> {
         child: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
-              AppNavbar.cupertinoNavBar(title: 'Vendor Name', context: context),
+              AppNavbar.cupertinoNavBar(
+                  title: 'Customer Name', context: context),
             ];
           },
-          body: VendorScaffold.cupertinoTabScaffold,
+          body: CustomerScaffold.cupertinoTabScaffold,
         ),
       );
     } else {
@@ -76,14 +82,14 @@ class _VendorState extends State<Vendor> {
                     (BuildContext context, bool innerBoxIsScrolled) {
                   return <Widget>[
                     AppNavbar.materialNavBar(
-                        title: 'Vendor Name', tabBar: Vendor.vendorTabBar)
+                        title: 'Customer Name', tabBar: Customer.customerTabBar)
                   ];
                 },
                 body: TabBarView(
                   children: <Widget>[
-                    Products(),
-                    Orders(),
-                    Profile(),
+                    ProductsCustomer(),
+                    ShoppingBag(),
+                    ProfileCustomer(),
                   ],
                 ))),
       );

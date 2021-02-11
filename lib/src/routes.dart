@@ -1,9 +1,14 @@
-import 'package:Vendor_app/src/Screens/landing.dart';
-import 'package:Vendor_app/src/Screens/login.dart';
-import 'package:Vendor_app/src/Screens/signup.dart';
-import 'package:Vendor_app/src/screens/vendor.dart';
+import 'package:Vendor_app/src/screens/customer.dart';
+import 'package:Vendor_app/src/screens/edit_product.dart';
+import 'package:Vendor_app/src/screens/edit_vendor.dart';
+import 'package:Vendor_app/src/screens/landing.dart';
+import 'package:Vendor_app/src/screens/login.dart';
+import 'package:Vendor_app/src/screens/signup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:Vendor_app/src/models/vendor.dart';
+
+import 'models/vendor.dart';
 
 abstract class Routes {
   static MaterialPageRoute materialRoutes(RouteSettings settings) {
@@ -16,7 +21,23 @@ abstract class Routes {
         return MaterialPageRoute(builder: (context) => Login());
       case "/vendor":
         return MaterialPageRoute(builder: (context) => Vendor());
+      case "/editproduct":
+        return MaterialPageRoute(builder: (context) => EditProduct());
+      case "/editvendor":
+        return MaterialPageRoute(builder: (context) => EditVendor());
       default:
+        var routeArray = settings.name.split('/');
+        if (settings.name.contains('/editproduct/')) {
+          return MaterialPageRoute(
+              builder: (context) => EditProduct(
+                    productId: routeArray[2],
+                  ));
+        } else if (settings.name.contains('/customer/')) {
+          return MaterialPageRoute(
+              builder: (context) => Customer(
+                    marketId: routeArray[2],
+                  ));
+        }
         return MaterialPageRoute(builder: (context) => Login());
     }
   }
@@ -31,7 +52,23 @@ abstract class Routes {
         return CupertinoPageRoute(builder: (context) => Login());
       case "/vendor":
         return CupertinoPageRoute(builder: (context) => Vendor());
+      case "/editproduct":
+        return CupertinoPageRoute(builder: (context) => EditProduct());
+      case "/editvendor":
+        return CupertinoPageRoute(builder: (context) => EditVendor());
       default:
+        var routeArray = settings.name.split('/');
+        if (settings.name.contains('/editproduct/')) {
+          return CupertinoPageRoute(
+              builder: (context) => EditProduct(
+                    productId: routeArray[2],
+                  ));
+        } else if (settings.name.contains('/customer/')) {
+          return CupertinoPageRoute(
+              builder: (context) => Customer(
+                    marketId: routeArray[2],
+                  ));
+        }
         return CupertinoPageRoute(builder: (context) => Login());
     }
   }

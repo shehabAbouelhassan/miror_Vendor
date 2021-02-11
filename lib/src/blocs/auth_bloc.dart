@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:Vendor_app/src/models/user.dart';
+import 'package:Vendor_app/src/models/application_user.dart';
 import 'package:Vendor_app/src/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
@@ -13,7 +13,7 @@ final RegExp regExpEmail = RegExp(
 class AuthBloc {
   final _email = BehaviorSubject<String>();
   final _password = BehaviorSubject<String>();
-  final _user = BehaviorSubject<User>();
+  final _user = BehaviorSubject<ApplicationUser>();
   final _errorMessage = BehaviorSubject<String>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirestoreService _firestoreService = FirestoreService();
@@ -23,8 +23,9 @@ class AuthBloc {
   Stream<String> get password => _password.stream.transform(validatePassword);
   Stream<bool> get isValid =>
       CombineLatestStream.combine2(email, password, (email, password) => true);
-  Stream<User> get user => _user.stream;
+  Stream<ApplicationUser> get user => _user.stream;
   Stream<String> get errorMessage => _errorMessage.stream;
+  String get userId => _user.value.userId;
 
   //Set Data
   Function(String) get changeEmail => _email.sink.add;
@@ -59,9 +60,11 @@ class AuthBloc {
   //Functions
   signupEmail() async {
     try {
+      /////**** */
       AuthResult authResult = await _auth.createUserWithEmailAndPassword(
           email: _email.value.trim(), password: _password.value.trim());
-      var user = User(userId: authResult.user.uid, email: _email.value.trim());
+      var user = ApplicationUser(
+          userId: authResult.user.uid, email: _email.value.trim());
       await _firestoreService.addUser(user);
       _user.sink.add(user);
     } on PlatformException catch (error) {
@@ -83,7 +86,7 @@ class AuthBloc {
   }
 
   Future<bool> isLoggedIn() async {
-    var firebaseUser = await _auth.currentUser();
+    var firebaseUser = _auth.currentUser;
     if (firebaseUser == null) return false;
 
     var user = await _firestoreService.fetchUser(firebaseUser.uid);
